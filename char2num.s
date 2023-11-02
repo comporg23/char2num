@@ -14,9 +14,9 @@ number:
 
 err0:
    mov $1, %rax                # system call for write
-   mov  $1, %rdi                # file handle for stdout
-   mov  $not_number, %rsi                # address of string to output
-   mov  $44, %rdx                # number of bytes
+   mov  $1, %rdi               # file handle for stdout
+   mov  $not_number, %rsi      # address of string to output
+   mov  $44, %rdx              # number of bytes
    syscall
    jmp exit
 
@@ -30,17 +30,35 @@ _start:
   mov $1, %rdx   # how many bytes to read
   syscall
 
-  xor %rax, %rax
-  movb (arr), %al  # %al is 8bit part of %rax
-  cmpb $48, %al    # this code checks if what was read from stdin
-  jl err0          # is in the range of 48-57 - i. e. it is a ascii character
-  cmpb $57, %al    # which represents number
-  jg err0          # otherwise it prints an error
-                   # do echo "+" | ./char2num
-                   # or
-                   # echo "a" | ./char2num
-                   # to see
-# write what have been read
+ # first part of your task is:
+ # now write a code which checks
+ # if what was read from stdin
+ # is in the range of 48-57 - i. e. it is a ascii character
+ # which represents number
+ # otherwise it prints an error
+ # for example if you do
+ # echo "+" | ./char2num
+ # it should print
+ # "not a number, pass digit character to stdin\n"
+ # look i already defined a string in the beginning of the file.
+ # and if you do
+ # echo "a" | ./char2num
+ # that also should result in the same error.
+ # otherwise, in case you read the character which is a number
+ # print to the console: "got number!". again, the string is there for you
+
+ # so here should be your code for
+ # if ch is in range 48..57 then
+ #   writeln "not a number, pass digit character to stdin"
+ # else
+ #   writeln "got number!"
+ # end if
+ #
+ # go on
+
+
+ # now, lets try to output what was read from stdin
+
    mov $1, %rax                # system call for write
    mov  $1, %rdi                # file handle for stdout
    mov  $arr, %rsi                # address of string to output
@@ -54,7 +72,14 @@ _start:
    mov  $1, %rdx                # number of bytes
    syscall
 
- # now, 42 is passed to printf. and will be printed
+ # now, your second task:
+ # see, below 42 is passed to printf.
+ # that printf from the libc library.
+ # it is a number constant: $42
+ # but it will be printed
+ # because printf is able to convert the number to string
+ # and pass to write() kernel call.
+
  # you need to convert the character you have got from the standard input
  # to number: to integer value.
  # move that number to %rsi instead of $42 and
